@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>صفحه‌بندی با تصاویر</title>
+    <style>
+      @font-face {
+        font-family: 'iran-sans';
+        src: url('./IRANSans.woff');
+      }
+      body {
+        width: 100%;
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+      }
+      .btn-container {
+        display: flex;
+        gap: 10px;
+        margin-top: 20px;
+      }
+      button {
+        width: 150px;
+        height: 40px;
+        color: white;
+        border: none;
+        cursor: pointer;
+        font-size: 19px;
+        font-family: 'iran-sans', sans-serif;
+      }
+      #prev {
+        background: tomato;
+      }
+      #next {
+        background: green;
+      }
+      img {
+        margin-inline:10px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="items"></div>
+    <div class="btn-container">
+      <button id="prev">قبل</button>
+      <button id="next">بعد</button>
+    </div>
+  
+    <script>
+      // داده‌ها
+      const items = [
+        "https://via.placeholder.com/150/000000/FFFFFF?text=1",
+        "https://via.placeholder.com/150/000000/FFFFFF?text=2",
+        "https://via.placeholder.com/150/000000/FFFFFF?text=3",
+        "https://via.placeholder.com/150/000000/FFFFFF?text=4",
+        "https://via.placeholder.com/150/000000/FFFFFF?text=5",
+        "https://via.placeholder.com/150/000000/FFFFFF?text=6",
+        "https://via.placeholder.com/150/000000/FFFFFF?text=7",
+        "https://via.placeholder.com/150/000000/FFFFFF?text=8",
+        "https://via.placeholder.com/150/000000/FFFFFF?text=9",
+        "https://via.placeholder.com/150/000000/FFFFFF?text=10",
+        "https://via.placeholder.com/150/000000/FFFFFF?text=11",
+        "https://via.placeholder.com/150/000000/FFFFFF?text=12"
+      ];
+  
+      // تنظیمات
+      let currentPage = 1;
+      const itemsPerPage = 3;
+      const totalPages = Math.ceil(items.length / itemsPerPage);
+  
+      // تابع صفحه‌بندی
+      function paginate(list, pageNumber, itemsPerPage) {
+        const startIndex = (pageNumber - 1) * itemsPerPage;
+        const endIndex = startIndex + itemsPerPage;
+        return list.slice(startIndex, endIndex);
+      }
+  
+      // نمایش آیتم‌های صفحه فعلی
+      function renderPage() {
+        const paginatedItems = paginate(items, currentPage, itemsPerPage);
+        const itemsList = document.getElementById("items");
+        itemsList.innerHTML = ""; // پاک کردن آیتم‌های قبلی
+        paginatedItems.forEach(item => {
+          const img = document.createElement("img");
+          img.src = item;
+          itemsList.appendChild(img);
+        });
+  
+        // کنترل وضعیت دکمه‌ها
+        document.getElementById("prev").disabled = currentPage === 1;
+        document.getElementById("next").disabled = currentPage === totalPages;
+      }
+  
+      // رویدادهای دکمه‌ها
+      document.getElementById("prev").addEventListener("click", () => {
+        if (currentPage > 1) {
+          currentPage--;
+          renderPage();
+        }
+      });
+  
+      document.getElementById("next").addEventListener("click", () => {
+        if (currentPage < totalPages) {
+          currentPage++;
+          renderPage();
+        }
+      });
+  
+      // نمایش صفحه ابتدایی
+      renderPage();
+    </script>
+  </body>
+</html>
